@@ -17,7 +17,7 @@
 		"noImplicitAny": false,
 		"strictNullChecks": false,
 		"allowUnreachableCode": false,
-		"noUnusedLocals": true,
+		"noUnusedLocals": false,
 		"noUnusedParameters": false,
 		"strictBindCallApply": false,
 		"useUnknownInCatchVariables": false,
