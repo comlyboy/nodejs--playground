@@ -66,10 +66,13 @@ export function sqlBuilder<TEntitySchema extends Record<string, any>>(tableName:
 
 const createQueryKnex = sqlBuilder<SampleClass>('user').insert({ firstname: 'corne' }).toQuery();
 const sqlUpdateQuery2 = sqlBuilder('user').where('id', 1).update({ name: 'remote gravity' }).toString();
+const deleteQuery = sqlBuilder<SampleClass>('user').where({ name: 'rjehfkdw', phonenumber: '09056765459' }).delete().toString();
+const deleteQuery2 = sqlBuilder<SampleClass>('user').where('id', 1).del().toString();
 
-
-console.log('createQueryKnex =', createQueryKnex);
-console.log('sqlUpdateQuery2 =', sqlUpdateQuery2);
+// console.log('createQueryKnex =', createQueryKnex);
+// console.log('sqlUpdateQuery2 =', sqlUpdateQuery2);
+console.log('deleteQuery =', deleteQuery);
+console.log('deleteQuery2 =', deleteQuery2);
 
 export async function generatePDFfromURL(url: string, outputPath: string) {
 	try {
@@ -138,5 +141,3 @@ const lowerCaseObj = {
 // function createDefaultObject<T>(type: new () => T): T {
 // 	return d.create(type);
 // }
-
-// console.log(createDefaultObject(IUser));
