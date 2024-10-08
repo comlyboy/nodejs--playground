@@ -55,7 +55,11 @@ export class SampleClass {
 
 export function sqlBuilder<TEntitySchema extends Record<string, any>>(tableName: string) {
 	if (!tableName.trim()) throw new Error('Table name is needed!');
-	return knex<{ [k in keyof TEntitySchema as Lowercase<keyof TEntitySchema & string>]: TEntitySchema[k] }, TEntitySchema>({ client: 'pg', })(tableName);
+	return knex<{ [k in keyof TEntitySchema as Lowercase<keyof TEntitySchema & string>]: TEntitySchema[k] }, TEntitySchema>({
+		client: 'pg',
+		connection: false as any,
+		pool: { min: 0, max: 0 }
+	})(tableName);
 }
 
 
@@ -66,13 +70,23 @@ export function sqlBuilder<TEntitySchema extends Record<string, any>>(tableName:
 
 const createQueryKnex = sqlBuilder<SampleClass>('user').insert({ firstname: 'corne' }).toQuery();
 const sqlUpdateQuery2 = sqlBuilder('user').where('id', 1).update({ name: 'remote gravity' }).toString();
+const sqlQuery = sqlBuilder('user').select('').where({ name: 'rjehfkdw', phonenumber: '090567654509' }).toString();
 const deleteQuery = sqlBuilder<SampleClass>('user').where({ name: 'rjehfkdw', phonenumber: '09056765459' }).delete().toString();
-const deleteQuery2 = sqlBuilder<SampleClass>('user').where('id', 1).del().toString();
+const deleteQuery2 = sqlBuilder<SampleClass>('user').where({}).delete().toString();
 
-// console.log('createQueryKnex =', createQueryKnex);
+// sqlBuilder<SampleClass>('users')
+// 	.select('firstName', 'name', 'lastname')
+// 	.where('id', '123456789')
+// 	// .innerJoin('order', 'order.userid', 'users.id')
+// 	.innerJoin('payments', 'payments.orderId', 'order.id').limit(1).then(d => console.log(d)).catch(error => console.log(error));
+
+sqlBuilder<SampleClass>('users').delete().where('', '')
+
+// console.log('createQuezryKnex =', createQueryKnex);
 // console.log('sqlUpdateQuery2 =', sqlUpdateQuery2);
 console.log('deleteQuery =', deleteQuery);
-console.log('deleteQuery2 =', deleteQuery2);
+// console.log('deleteQuery2 =', deleteQuery2);
+// console.log('select JOIN =>>>', selectJoin);
 
 export async function generatePDFfromURL(url: string, outputPath: string) {
 	try {
